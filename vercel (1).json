@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/writings/:slug",
+      "destination": "/article.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/$1.html"
+    }
+  ]
+}
