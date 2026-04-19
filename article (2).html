@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Article — Harsh Kumar">
+  <title>Article — realharshkumar</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,600;1,9..144,700&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    :root{
+      --bg:#faf7f2;
+      --ink:#16140f;
+      --mid:#8a8070;
+      --pale:#f0ebe0;
+      --warm:#e8e0d0;
+      --red:#bf3517;
+      --rule:rgba(22,20,15,0.1);
+    }
+    html{scroll-behavior:smooth;}
+    body{
+      background:var(--bg);
+      color:var(--ink);
+      font-family:'Instrument Sans',sans-serif;
+      overflow-x:hidden;
+      cursor:none;
+    }
+
+    /* ── CURSOR ── */
+    .ucursor{
+      position:fixed;
+      width:18px;height:2px;
+      background:var(--ink);
+      pointer-events:none;z-index:9999;
+      top:0;left:0;
+      transition:width 0.2s,background 0.2s;
+    }
+    .ucursor.hover{width:34px;background:var(--red);}
+
+    /* ── GRAIN ── */
+    body::after{
+      content:'';position:fixed;inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+      pointer-events:none;z-index:900;opacity:0.55;
+    }
+
+    /* ── NAV ── */
+    nav{
+      position:fixed;top:0;left:0;right:0;z-index:500;
+      display:flex;justify-content:space-between;align-items:center;
+      padding:1.6rem 3.5rem;
+      background:linear-gradient(var(--bg),transparent);
+    }
+    .nav-sig{
+      font-family:'Fraunces',serif;
+      font-size:1.1rem;font-weight:300;font-style:italic;
+      color:var(--ink);text-decoration:none;letter-spacing:-0.01em;
+    }
+    .nav-sig strong{font-weight:600;font-style:normal;}
+    .nav-back{
+      font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;
+      color:var(--mid);text-decoration:none;transition:color 0.2s;
+    }
+    .nav-back:hover{color:var(--ink);}
+
+    /* ── ARTICLE CONTAINER ── */
+    .article-wrapper{
+      max-width:720px;margin:0 auto;padding:8rem 3.5rem 6rem;
+    }
+
+    .article-meta{
+      display:flex;gap:1.2rem;align-items:center;margin-bottom:2rem;
+      font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;
+      color:var(--mid);
+    }
+    .article-category{color:var(--red);font-weight:600;}
+    .article-date{color:var(--mid);}
+    .article-divider{width:1px;height:14px;background:var(--rule);}
+
+    .article-title{
+      font-family:'Fraunces',serif;
+      font-size:clamp(2.2rem,5vw,3.8rem);
+      font-weight:600;line-height:1.1;
+      margin-bottom:2rem;letter-spacing:-0.02em;
+    }
+
+    .article-excerpt{
+      font-size:1.05rem;line-height:1.8;
+      color:var(--mid);margin-bottom:3rem;
+      font-family:'Instrument Serif',serif;
+      max-width:600px;
+    }
+
+    .article-content{
+      font-size:1rem;line-height:1.85;
+      color:var(--ink);
+    }
+
+    .article-content p{
+      margin-bottom:1.6rem;
+    }
+
+    .article-content h2{
+      font-family:'Fraunces',serif;
+      font-size:1.8rem;font-weight:600;
+      margin:3rem 0 1.5rem;line-height:1.2;
+    }
+
+    .article-content h3{
+      font-family:'Fraunces',serif;
+      font-size:1.3rem;font-weight:600;
+      margin:2.5rem 0 1rem;line-height:1.2;
+    }
+
+    .article-content ul,
+    .article-content ol{
+      margin:1.6rem 0 1.6rem 2rem;
+    }
+
+    .article-content li{
+      margin-bottom:0.8rem;
+    }
+
+    .article-content blockquote{
+      border-left:3px solid var(--red);
+      padding:1.5rem 0 1.5rem 2rem;
+      margin:2rem 0;
+      font-style:italic;
+      color:var(--mid);
+    }
+
+    .article-content a{
+      color:var(--red);text-decoration:underline;
+      transition:color 0.2s;
+    }
+
+    .article-content a:hover{
+      color:var(--ink);
+    }
+
+    .article-image{
+      margin:2.5rem 0;
+      width:100%;
+      max-width:100%;
+    }
+
+    .article-image img{
+      width:100%;
+      height:auto;
+      display:block;
+      border-radius:4px;
+    }
+
+    .article-image-caption{
+      font-size:0.9rem;
+      color:var(--mid);
+      margin-top:0.8rem;
+      font-style:italic;
+      text-align:center;
+    }
+
+    .article-footer{
+      margin-top:4rem;padding-top:2rem;
+      border-top:1px solid var(--rule);
+    }
+
+    .article-author{
+      display:flex;gap:1.5rem;align-items:flex-start;
+    }
+
+    .author-text{font-size:0.95rem;line-height:1.7;}
+    .author-name{font-weight:600;color:var(--ink);display:block;}
+    .author-bio{color:var(--mid);font-size:0.9rem;margin-top:0.4rem;}
+
+    .article-nav{
+      display:flex;gap:1rem;margin-top:3rem;
+    }
+
+    .nav-btn{
+      display:inline-block;
+      padding:0.8rem 1.6rem;
+      background:var(--ink);color:var(--bg);
+      font-size:0.7rem;font-weight:600;
+      letter-spacing:0.1em;text-transform:uppercase;
+      text-decoration:none;
+      transition:background 0.2s,transform 0.15s;
+    }
+
+    .nav-btn:hover{
+      background:var(--red);transform:translateY(-2px);
+    }
+
+    .loading{
+      text-align:center;padding:4rem 2rem;
+      color:var(--mid);font-size:1.1rem;
+    }
+
+    .error{
+      text-align:center;padding:4rem 2rem;
+      color:var(--red);
+    }
+
+    @media (max-width:640px){
+      nav{padding:1.2rem 2rem;}
+      .article-wrapper{padding:6rem 2rem 4rem;}
+      .article-title{font-size:clamp(1.8rem,5vw,2.5rem);}
+    }
+  </style>
+</head>
+
+<body>
+  <div id="uc" class="ucursor"></div>
+
+  <!-- NAVIGATION -->
+  <nav>
+    <a href="/" class="nav-sig"><strong>Harsh</strong> Kumar</a>
+    <a href="/writings" class="nav-back">← All writings</a>
+  </nav>
+
+  <!-- ARTICLE CONTAINER -->
+  <div class="article-wrapper">
+    <div id="articleContent">
+      <div class="loading">Loading article...</div>
+    </div>
+  </div>
+
+  <script>
+    // Extract slug from URL
+    const slug = window.location.pathname.split('/').pop();
+    const SANITY_TOKEN = 'sk2P8tilfQGmuh17EJOYx6FyTPujgyABNsCByca2NAzOjkuzle13MqHUaYMj1dJG5uPHedazeTabWrvNvZ8XRuqtC8F098ooS4XXvZR8Gg9k6fYO5e9VlGEWhz6PXtNvywYN4Ck6wTP1hTbMfxEOxwAH7FiQcoX0RaLHpABTZI7s1v3r0PeF';
+
+    // Fetch article from Sanity by slug
+    async function loadArticle() {
+      try {
+        const PROJECT_ID = 'de2pyr5p';
+        const DATASET = 'production';
+        const query = `*[_type == "writing" && slug.current == "${slug}"][0]`;
+        
+        const response = await fetch(
+          `https://${PROJECT_ID}.api.sanity.io/v2021-06-07/data/query/${DATASET}?query=${encodeURIComponent(query)}`,
+          {
+            headers: {
+              'Authorization': `Bearer ${SANITY_TOKEN}`
+            }
+          }
+        );
+        
+        if (!response.ok) throw new Error('API error');
+        
+        const data = await response.json();
+        const article = data.result;
+        
+        if (!article) {
+          document.getElementById('articleContent').innerHTML = `
+            <div class="error">
+              <h2>Article not found</h2>
+              <p>Sorry, we couldn't find this article.</p>
+              <a href="/writings" class="nav-btn">Back to all writings</a>
+            </div>
+          `;
+          return;
+        }
+
+        // Format date
+        const date = article.publishedAt 
+          ? new Date(article.publishedAt).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })
+          : '';
+
+        // Convert Sanity blocks to HTML
+        let contentHTML = '';
+        if (article.content && Array.isArray(article.content)) {
+          article.content.forEach(block => {
+            if (block._type === 'block') {
+              const tag = block.style || 'p';
+              let text = block.children?.map(child => child.text).join('') || '';
+              contentHTML += `<${tag}>${text}</${tag}>`;
+            } else if (block._type === 'image' && block.asset) {
+              const imageUrl = `https://cdn.sanity.io/images/${PROJECT_ID}/${DATASET}/${block.asset._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png')}`;
+              const altText = block.alt || 'Article image';
+              const caption = block.caption || '';
+              contentHTML += `
+                <figure class="article-image">
+                  <img src="${imageUrl}" alt="${altText}" />
+                  ${caption ? `<figcaption class="article-image-caption">${caption}</figcaption>` : ''}
+                </figure>
+              `;
+            }
+          });
+        }
+
+        // Update page title
+        document.title = `${article.title} — realharshkumar`;
+
+        // Render article
+        document.getElementById('articleContent').innerHTML = `
+          <article>
+            <div class="article-meta">
+              ${article.category ? `<span class="article-category">${article.category}</span>` : ''}
+              ${article.category && date ? `<div class="article-divider"></div>` : ''}
+              ${date ? `<span class="article-date">${date}</span>` : ''}
+            </div>
+            
+            <h1 class="article-title">${article.title}</h1>
+            
+            ${article.excerpt ? `<p class="article-excerpt">${article.excerpt}</p>` : ''}
+            
+            ${article.image && article.image.asset ? `
+              <figure class="article-image">
+                <img src="https://cdn.sanity.io/images/${PROJECT_ID}/${DATASET}/${article.image.asset._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png')}" alt="${article.image.alt || 'Article featured image'}" />
+                ${article.image.caption ? `<figcaption class="article-image-caption">${article.image.caption}</figcaption>` : ''}
+              </figure>
+            ` : ''}
+            
+            <div class="article-content">
+              ${contentHTML || '<p>No content available.</p>'}
+            </div>
+
+            <div class="article-footer">
+              <div class="article-author">
+                <div class="author-text">
+                  <span class="author-name">Harsh Kumar</span>
+                  <span class="author-bio">Brand strategist • Writer • Founder of Bluebee Digital</span>
+                </div>
+              </div>
+              <div class="article-nav">
+                <a href="/writings" class="nav-btn">All writings →</a>
+                <a href="/" class="nav-btn">Home →</a>
+              </div>
+            </div>
+          </article>
+        `;
+
+      } catch (error) {
+        console.error('Error loading article:', error);
+        document.getElementById('articleContent').innerHTML = `
+          <div class="error">
+            <h2>Error loading article</h2>
+            <p>Something went wrong. Please try again.</p>
+            <a href="/writings" class="nav-btn">Back to all writings</a>
+          </div>
+        `;
+      }
+    }
+
+    // Cursor
+    const uc = document.getElementById('uc');
+    document.addEventListener('mousemove', e => {
+      uc.style.transform = `translate(${e.clientX - 9}px, ${e.clientY + 12}px)`;
+    });
+
+    document.querySelectorAll('a,button').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        uc.classList.add('hover');
+        uc.style.background = 'var(--red)';
+      });
+      el.addEventListener('mouseleave', () => {
+        uc.classList.remove('hover');
+        uc.style.background = 'var(--ink)';
+      });
+    });
+
+    // Load article on page load
+    loadArticle();
+  </script>
+</body>
+</html>
