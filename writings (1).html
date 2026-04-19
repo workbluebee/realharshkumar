@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Writings – Harsh Kumar</title>
+  
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,144,300;0,9,144,400;0,9,144,600;1,9,144,400&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Instrument+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+    :root{
+      --bg:#faf7f2;
+      --ink:#16140f;
+      --mid:#8a8070;
+      --pale:#f0ebe0;
+      --red:#bf3517;
+    }
+
+    html{scroll-behavior:smooth}
+
+    body{
+      background:var(--bg);
+      color:var(--ink);
+      font-family:'Instrument Sans',sans-serif;
+      line-height:1.6;
+      font-size:16px;
+    }
+
+    .container{max-width:900px;margin:0 auto;padding:40px 20px}
+
+    h1{
+      font-family:'Fraunces',serif;
+      font-size:clamp(2rem, 6vw, 3.5rem);
+      margin-bottom:40px;
+      line-height:1.2;
+    }
+
+    .writings-grid{
+      display:grid;
+      gap:40px;
+    }
+
+    .writing-card{
+      padding:30px;
+      border:1px solid var(--pale);
+      background:var(--bg);
+      transition:all 0.3s;
+      cursor:pointer;
+      text-decoration:none;
+      color:inherit;
+      display:block;
+    }
+
+    .writing-card:hover{
+      border-color:var(--ink);
+      box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .writing-card h2{
+      font-family:'Fraunces',serif;
+      font-size:clamp(1.4rem,4vw,1.8rem);
+      margin-bottom:12px;
+      line-height:1.3;
+    }
+
+    .writing-card p{
+      color:var(--mid);
+      margin-bottom:12px;
+      line-height:1.8;
+      font-size:0.95rem;
+    }
+
+    .writing-meta{
+      display:flex;
+      gap:20px;
+      font-size:0.75rem;
+      color:var(--mid);
+      margin-top:15px;
+      flex-wrap:wrap;
+    }
+
+    .writing-meta span{
+      display:inline-block;
+    }
+
+    .loading{
+      text-align:center;
+      padding:60px 20px;
+      color:var(--mid);
+    }
+
+    .error{
+      text-align:center;
+      padding:60px 20px;
+      color:var(--red);
+    }
+
+    nav{
+      padding:30px 20px;
+      border-bottom:1px solid var(--pale);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    nav a{
+      font-weight:600;
+      font-size:14px;
+    }
+
+    nav a:hover{
+      color:var(--red);
+    }
+
+    footer{
+      margin-top:80px;
+      padding:40px 20px;
+      text-align:center;
+      border-top:1px solid var(--pale);
+      font-size:12px;
+      color:var(--mid);
+    }
+
+    @media (max-width:640px){
+      .container{
+        padding:20px 16px;
+      }
+
+      h1{
+        margin-bottom:30px;
+        font-size:clamp(1.6rem,5vw,2.2rem);
+      }
+
+      .writings-grid{
+        gap:20px;
+      }
+
+      .writing-card{
+        padding:20px;
+      }
+
+      .writing-card h2{
+        font-size:clamp(1.1rem,3.5vw,1.5rem);
+        margin-bottom:10px;
+      }
+
+      .writing-card p{
+        font-size:0.9rem;
+        margin-bottom:10px;
+      }
+
+      .writing-meta{
+        gap:12px;
+        font-size:0.7rem;
+        margin-top:12px;
+      }
+
+      nav{
+        padding:20px 16px;
+        font-size:13px;
+      }
+
+      footer{
+        margin-top:60px;
+        padding:30px 16px;
+        font-size:11px;
+      }
+    }
+</head>
+
+<body>
+  <nav>
+    <a href="/">← Back to home</a>
+    <span style="font-weight:600;">All Writings</span>
+  </nav>
+
+  <div class="container">
+    <h1>All Writings</h1>
+    
+    <div class="writings-grid" id="writings-container">
+      <div class="loading">Loading articles...</div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Original analysis on brand psychology & marketing strategy.</p>
+    <p style="margin-top:15px;">Jamshedpur-based. Chronically online.</p>
+  </footer>
+
+  <script>
+    async function loadAllWritings() {
+      try {
+        const projectId = 'de2pyr5p';
+        const dataset = 'production';
+        const query = '*[_type == "writing"] | order(_createdAt desc)';
+        
+        const url = `https://${projectId}.api.sanity.io/v2021-06-07/data/query/${dataset}?query=${encodeURIComponent(query)}`;
+        
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        const writings = data.result || [];
+        const container = document.getElementById('writings-container');
+        
+        if (writings.length === 0) {
+          container.innerHTML = '<div class="error">No articles yet. Check back soon!</div>';
+          return;
+        }
+        
+        let html = '';
+        writings.forEach(article => {
+          const date = article.publishedAt ? new Date(article.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
+          const slug = article.slug?.current || '';
+          const link = slug ? `/writings/${slug}` : '#';
+          html += `
+            <a href="${link}" class="writing-card">
+              <h2>${article.title || 'Untitled'}</h2>
+              <p>${article.excerpt || 'No excerpt available'}</p>
+              <div class="writing-meta">
+                ${article.category ? `<span>${article.category}</span>` : ''}
+                ${date ? `<span>${date}</span>` : ''}
+              </div>
+            </a>
+          `;
+        });
+        
+        container.innerHTML = html;
+      } catch (error) {
+        console.error('Error loading writings:', error);
+        document.getElementById('writings-container').innerHTML = '<div class="error">Error loading articles. Please refresh.</div>';
+      }
+    }
+    
+    loadAllWritings();
+  </script>
+</body>
+</html>
