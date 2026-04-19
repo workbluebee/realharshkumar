@@ -1,0 +1,11 @@
+
+Copy
+
+{
+  "rewrites": [
+    {
+      "source": "/writings",
+      "destination": "/writings.html"
+    }
+  ]
+}
