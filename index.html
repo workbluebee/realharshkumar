@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Harsh Kumar – Digital marketer specializing in Instagram & YouTube growth, content strategy, and marketing.">
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Harsh Kumar",
+    "url": "https://realharshkumar.com",
+    "sameAs": [
+      "https://twitter.com/realharshkumar",
+      "https://instagram.com/realharshkumar"
+    ]
+  }
+  </script>
+
+  <title>Harsh Kumar – realharshkumar</title>
+  
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,144,300;0,9,144,400;0,9,144,600;1,9,144,400&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Instrument+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+    :root{
+      --bg:#faf7f2;
+      --ink:#16140f;
+      --mid:#8a8070;
+      --pale:#f0ebe0;
+      --red:#bf3517;
+    }
+
+    html{scroll-behavior:smooth}
+
+    body{
+      background:var(--bg);
+      color:var(--ink);
+      font-family:'Instrument Sans',sans-serif;
+      line-height:1.6;
+      font-size:16px;
+    }
+
+    /* Grain overlay */
+    body::before{
+      content:'';
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect fill="%23faf7f2" width="100" height="100"/><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="1"/><feColorMatrix type="saturate" values="0.3"/></filter><rect width="100" height="100" fill="%23000000" opacity="0.03" style="filter:url(%23noise)"/></svg>');
+      pointer-events:none;
+      z-index:9999;
+      mix-blend-mode:overlay;
+    }
+
+    a{color:inherit;text-decoration:none}
+    button{background:none;border:none;cursor:pointer;font:inherit;color:inherit}
+
+    .container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+    /* Navigation */
+    nav{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:40px 20px;
+      font-size:14px;
+      letter-spacing:0.5px;
+    }
+
+    nav .logo{
+      font-family:'Fraunces',serif;
+      font-size:18px;
+      font-weight:600;
+    }
+
+    nav .links{
+      display:flex;
+      gap:30px;
+      list-style:none;
+    }
+
+    nav a:hover{
+      color:var(--red);
+    }
+
+    /* Hero */
+    .hero{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:60px;
+      align-items:center;
+      padding:60px 20px;
+      min-height:calc(100vh - 80px);
+    }
+
+    .hero-text h1{
+      font-family:'Fraunces',serif;
+      font-size:clamp(2.5rem, 8vw, 4.5rem);
+      font-weight:600;
+      line-height:1.1;
+      margin-bottom:30px;
+    }
+
+    .hero-text p{
+      font-size:16px;
+      margin-bottom:20px;
+      color:var(--mid);
+    }
+
+    .hero-cta{
+      display:inline-block;
+      background:var(--ink);
+      color:var(--bg);
+      padding:12px 24px;
+      font-weight:600;
+      text-transform:uppercase;
+      font-size:12px;
+      letter-spacing:1px;
+      margin-top:20px;
+      transition:background 0.3s;
+    }
+
+    .hero-cta:hover{
+      background:var(--red);
+    }
+
+    .hero-image{
+      width:100%;
+      height:100%;
+      background:var(--pale);
+      border-radius:4px;
+    }
+
+    /* Writings section */
+    #writings{
+      padding:80px 20px;
+      background:var(--ink);
+      color:var(--bg);
+    }
+
+    .writings-container{
+      max-width:1200px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:60px;
+      align-items:center;
+    }
+
+    .writings-content h2{
+      font-family:'Fraunces',serif;
+      font-size:clamp(2rem, 6vw, 3.5rem);
+      line-height:1.2;
+      margin-bottom:30px;
+    }
+
+    .writings-content p{
+      color:var(--pale);
+      margin-bottom:15px;
+      line-height:1.8;
+    }
+
+    .writings-list{
+      list-style:none;
+    }
+
+    .writings-list li{
+      padding:20px 0;
+      border-bottom:1px solid rgba(250,247,242,0.2);
+    }
+
+    .writings-list li:last-child{
+      border-bottom:none;
+    }
+
+    .writing-title{
+      font-family:'Fraunces',serif;
+      font-size:18px;
+      font-weight:600;
+      margin-bottom:8px;
+    }
+
+    .writing-excerpt{
+      font-size:14px;
+      color:var(--pale);
+      line-height:1.6;
+    }
+
+    .writing-date{
+      font-size:12px;
+      color:var(--mid);
+      margin-top:8px;
+    }
+
+    /* Footer */
+    footer{
+      background:var(--bg);
+      border-top:1px solid var(--pale);
+      padding:40px 20px;
+      text-align:center;
+      font-size:14px;
+      color:var(--mid);
+    }
+
+    footer a{
+      color:var(--ink);
+      text-decoration:underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero, .writings-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      nav .links {
+        gap: 15px;
+        font-size: 12px;
+      }
+    }
+
+    /* Loading state */
+    .loading{
+      opacity:0.6;
+    }
+
+    /* Error state */
+    .error{
+      color:var(--red);
+      font-size:14px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="logo">Harsh Kumar</div>
+    <ul class="links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#writings">Writings</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="about">
+    <div class="hero-text">
+      <h1>I think too much about brands.</h1>
+      <p>And I write about it — on my own writings, Substack, X, everywhere.</p>
+      <p style="font-style:italic; color:var(--mid); margin-top:20px;">Jamshedpur-based. Chronically online.</p>
+      <p>Founder of Bluebee Digital. I help brands grow on Instagram and YouTube using systems I'm probably too obsessed with. But also — I just can't stop figuring out why things stick.</p>
+      <a href="#writings" class="hero-cta">Read my writings</a>
+    </div>
+    <div class="hero-image"></div>
+  </section>
+
+  <!-- Writings -->
+  <section id="writings">
+    <div class="writings-container">
+      <div class="writings-content">
+        <h2>My writings — original analysis</h2>
+        <p>Original analysis on brand psychology, marketing strategy, and the honest stuff behind the best campaigns. I publish here first — then cross-post to Medium.</p>
+        <p style="font-size:12px; margin-top:30px; color:var(--pale);"><em>Your platform, your SEO, your control.</em></p>
+      </div>
+      <div>
+        <ul class="writings-list" id="latest-writings">
+          <li class="loading">Loading latest article...</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>Made with obsession about brands. <a href="https://twitter.com/realharshkumar">Twitter</a> • <a href="https://instagram.com/realharshkumar">Instagram</a> • <a href="mailto:hello@realharshkumar.com">Email</a></p>
+    <p style="margin-top:20px; font-size:12px;">No agency was harmed in the making of this site.</p>
+  </footer>
+
+  <script>
+    // Fetch latest article from Sanity
+    async function loadLatestWriting() {
+      try {
+        const projectId = 'de2pyr5p';
+        const dataset = 'production';
+        const query = '*[_type == "writing"] | order(publishedAt desc)[0:1]';
+        
+        const url = `https://${projectId}.api.sanity.io/v2021-06-07/data/query/${dataset}?query=${encodeURIComponent(query)}`;
+        
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        const writings = data.result || [];
+        const container = document.getElementById('latest-writings');
+        
+        if (writings.length === 0) {
+          container.innerHTML = '<li class="error">No articles yet. Check back soon!</li>';
+          return;
+        }
+        
+        const article = writings[0];
+        const date = article.publishedAt ? new Date(article.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
+        
+        container.innerHTML = `
+          <li>
+            <div class="writing-title">${article.title || 'Untitled'}</div>
+            <div class="writing-excerpt">${article.excerpt || 'No excerpt'}</div>
+            ${date ? `<div class="writing-date">${date}</div>` : ''}
+          </li>
+        `;
+      } catch (error) {
+        console.error('Error loading writings:', error);
+        document.getElementById('latest-writings').innerHTML = '<li class="error">Error loading articles. Please refresh.</li>';
+      }
+    }
+    
+    // Load on page load
+    loadLatestWriting();
+  </script>
+</body>
+</html>
