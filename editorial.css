@@ -59,15 +59,21 @@ body::after{
 a,button{cursor:pointer;}
 
 nav{
+  position:fixed !important;
   top:0.8rem !important;
   left:clamp(1rem,3vw,3.5rem) !important;
   right:clamp(1rem,3vw,3.5rem) !important;
   width:auto;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:1rem !important;
   padding:0.85rem 1rem !important;
   border:1px solid rgba(23,19,14,0.12);
   background:rgba(251,247,239,0.78) !important;
   backdrop-filter:blur(18px) saturate(1.1);
   box-shadow:0 18px 50px rgba(35,27,16,0.08);
+  z-index:920 !important;
 }
 
 nav.dark-bg{
@@ -78,7 +84,16 @@ nav.dark-bg{
 .nav-sig{
   font-family:var(--display) !important;
   font-size:1rem !important;
+  font-weight:300 !important;
+  font-style:italic !important;
+  color:var(--ink) !important;
   letter-spacing:0 !important;
+  text-decoration:none !important;
+}
+
+.nav-sig strong{
+  font-weight:600 !important;
+  font-style:normal !important;
 }
 
 .nav-links{gap:1.5rem !important;}
@@ -88,6 +103,8 @@ nav.dark-bg{
   color:var(--mid) !important;
   font-size:0.66rem !important;
   letter-spacing:0.16em !important;
+  text-decoration:none !important;
+  text-transform:uppercase !important;
 }
 .nav-links a:hover,
 .nav-back:hover{color:var(--ink) !important;}
