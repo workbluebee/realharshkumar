@@ -3,7 +3,22 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Article | Harsh Kumar">
+  <meta name="description" content="Original essay by Harsh Kumar on brand psychology, marketing strategy, and why things stick.">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#f6f0e6">
+  <meta property="og:site_name" content="realharshkumar">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Article | Harsh Kumar">
+  <meta property="og:description" content="Original essay by Harsh Kumar on brand psychology, marketing strategy, and why things stick.">
+  <meta property="og:url" content="https://www.realharshkumar.com/">
+  <meta property="og:image" content="https://www.realharshkumar.com/assets/hero-photo.jpg">
+  <meta property="article:author" content="Harsh Kumar">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@realharshkumar">
+  <meta name="twitter:creator" content="@realharshkumar">
+  <meta name="twitter:title" content="Article | Harsh Kumar">
+  <meta name="twitter:description" content="Original essay by Harsh Kumar on brand psychology, marketing strategy, and why things stick.">
+  <meta name="twitter:image" content="https://www.realharshkumar.com/assets/hero-photo.jpg">
   <title>Article | realharshkumar</title>
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="shortcut icon" href="/favicon.ico">
@@ -306,7 +321,7 @@
       .article-title{font-size:clamp(1.8rem,5vw,2.5rem);}
     }
   </style>
-  <link rel="stylesheet" href="/editorial.css?v=39">
+  <link rel="stylesheet" href="/editorial.css?v=40">
 </head>
 
 <body>
@@ -364,6 +379,8 @@
     const AUTHOR_NAME = 'Harsh Kumar';
     const AUTHOR_HANDLE = '@realharshkumar';
     const WHATSAPP_NUMBER = '916200793954';
+    const SITE_URL = 'https://www.realharshkumar.com';
+    const DEFAULT_SHARE_IMAGE = `${SITE_URL}/assets/hero-photo.jpg`;
     let currentArticle = null;
     let selectedArticleText = '';
 
@@ -425,8 +442,105 @@
       return String(article?.pullQuote || article?.quote || '').trim();
     }
 
-    function canonicalArticleUrl() {
-      return slug ? `https://realharshkumar.com/writings/${encodeURIComponent(slug)}` : 'https://realharshkumar.com';
+    function canonicalArticleUrl(articleSlug = slug) {
+      return articleSlug ? `${SITE_URL}/writings/${encodeURIComponent(articleSlug)}` : SITE_URL;
+    }
+
+    function safePublishedAt(article) {
+      const published = article?.publishedAt ? new Date(article.publishedAt) : null;
+      const created = article?._createdAt ? new Date(article._createdAt) : null;
+      const oneDayFromNow = Date.now() + 24 * 60 * 60 * 1000;
+      if (published && !Number.isNaN(published.getTime()) && published.getTime() <= oneDayFromNow) return published;
+      if (created && !Number.isNaN(created.getTime())) return created;
+      return published && !Number.isNaN(published.getTime()) ? published : null;
+    }
+
+    function formatArticleDate(article) {
+      const date = safePublishedAt(article);
+      return date ? date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      }) : '';
+    }
+
+    function setMeta(selector, attr, value) {
+      if (!value) return;
+      let element = document.head.querySelector(selector);
+      if (!element) {
+        element = document.createElement('meta');
+        if (selector.includes('property=')) {
+          element.setAttribute('property', selector.match(/property="([^"]+)"/)?.[1] || '');
+        } else {
+          element.setAttribute('name', selector.match(/name="([^"]+)"/)?.[1] || '');
+        }
+        document.head.appendChild(element);
+      }
+      element.setAttribute(attr, value);
+    }
+
+    function setCanonical(url) {
+      let link = document.head.querySelector('link[rel="canonical"]');
+      if (!link) {
+        link = document.createElement('link');
+        link.setAttribute('rel', 'canonical');
+        document.head.appendChild(link);
+      }
+      link.setAttribute('href', url);
+    }
+
+    function setArticleJsonLd(article, canonicalUrl, imageUrl, date) {
+      let script = document.getElementById('articleJsonLd');
+      if (!script) {
+        script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.id = 'articleJsonLd';
+        document.head.appendChild(script);
+      }
+      const isoDate = safePublishedAt(article)?.toISOString();
+      script.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: article.title,
+        description: article.excerpt || article.title,
+        image: imageUrl,
+        datePublished: isoDate,
+        dateModified: isoDate,
+        author: {
+          '@type': 'Person',
+          name: AUTHOR_NAME,
+          url: SITE_URL,
+          sameAs: [
+            'https://x.com/realharshkumar',
+            'https://www.instagram.com/realharshkumar'
+          ]
+        },
+        publisher: {
+          '@type': 'Person',
+          name: AUTHOR_NAME
+        },
+        mainEntityOfPage: canonicalUrl
+      });
+    }
+
+    function updateArticleSeo(article, featuredImageUrl) {
+      const articleSlug = article?.slug?.current || slug;
+      const canonicalUrl = canonicalArticleUrl(articleSlug);
+      const imageUrl = featuredImageUrl ? optimizedImageUrl(featuredImageUrl, 1200, 82) : DEFAULT_SHARE_IMAGE;
+      const description = stripMarkers(article.excerpt || article.title || 'Original essay by Harsh Kumar.');
+      const title = `${article.title} | Harsh Kumar`;
+      document.title = title;
+      setCanonical(canonicalUrl);
+      setMeta('meta[name="description"]', 'content', description);
+      setMeta('meta[property="og:title"]', 'content', article.title);
+      setMeta('meta[property="og:description"]', 'content', description);
+      setMeta('meta[property="og:url"]', 'content', canonicalUrl);
+      setMeta('meta[property="og:image"]', 'content', imageUrl);
+      setMeta('meta[property="article:published_time"]', 'content', safePublishedAt(article)?.toISOString());
+      setMeta('meta[name="twitter:title"]', 'content', article.title);
+      setMeta('meta[name="twitter:description"]', 'content', description);
+      setMeta('meta[name="twitter:image"]', 'content', imageUrl);
+      setArticleJsonLd(article, canonicalUrl, imageUrl);
     }
 
     function sanityImageUrlFromRef(ref, projectId, dataset) {
@@ -500,14 +614,7 @@
         }
         currentArticle = article;
 
-        // Format date
-        const date = article.publishedAt 
-          ? new Date(article.publishedAt).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })
-          : '';
+        const date = formatArticleDate(article);
 
         // Parse simple template code format
         let contentHTML = '';
@@ -571,8 +678,7 @@
         const filedUnder = getFiledUnder(article);
         const featuredImageUrl = article.image?.asset?._ref ? sanityImageUrlFromRef(article.image.asset._ref, PROJECT_ID, DATASET) : '';
 
-        // Update page title
-        document.title = `${article.title} | realharshkumar`;
+        updateArticleSeo(article, featuredImageUrl);
 
         // Render article
         document.getElementById('articleContent').innerHTML = `
@@ -617,6 +723,7 @@
                   <span class="author-bio">Brand strategist • Writer • Founder of Bluebee Digital</span>
                 </div>
               </div>
+              <p class="article-trust">Published first on realharshkumar.com. Source: ${escapeHTML(article.title)} by ${AUTHOR_HANDLE}.</p>
               <div class="article-nav">
                 <a href="/writings.html" class="nav-btn">All writings →</a>
                 <a href="/" class="nav-btn">Home →</a>

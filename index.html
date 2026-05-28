@@ -3,7 +3,22 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Harsh Kumar - Digital marketer specializing in Instagram & YouTube growth, content strategy, and marketing automation. Based in India.">
+  <meta name="description" content="Harsh Kumar is a Jamshedpur-based social strategist, writer, and founder writing essays on brand psychology, marketing strategy, and why things stick.">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#f6f0e6">
+  <link rel="canonical" href="https://www.realharshkumar.com/">
+  <meta property="og:site_name" content="realharshkumar">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Harsh Kumar | Brand Strategy Essays">
+  <meta property="og:description" content="Original essays on brand psychology, marketing strategy, and why things stick.">
+  <meta property="og:url" content="https://www.realharshkumar.com/">
+  <meta property="og:image" content="https://www.realharshkumar.com/assets/hero-photo.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@realharshkumar">
+  <meta name="twitter:creator" content="@realharshkumar">
+  <meta name="twitter:title" content="Harsh Kumar | Brand Strategy Essays">
+  <meta name="twitter:description" content="Original essays on brand psychology, marketing strategy, and why things stick.">
+  <meta name="twitter:image" content="https://www.realharshkumar.com/assets/hero-photo.jpg">
 
 <script type="application/ld+json">
 {
@@ -22,6 +37,7 @@
   <link rel="shortcut icon" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link rel="preload" as="image" href="/assets/hero-photo.jpg" fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,600;1,9..144,700&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
@@ -573,7 +589,7 @@
       footer{flex-direction:column;gap:0.4rem;text-align:center;padding:1.4rem;}
     }
   </style>
-  <link rel="stylesheet" href="/editorial.css?v=39">
+  <link rel="stylesheet" href="/editorial.css?v=40">
 </head>
 <body>
 
@@ -614,7 +630,7 @@
     </div>
   </div>
   <div class="hero-right">
-    <div class="hero-img" id="heroImg"></div>
+    <div class="hero-img" id="heroImg" style="background-image:url('/assets/hero-photo.jpg')"></div>
     <div class="hero-img-grad"></div>
     <div class="hero-year">2020</div>
     <div class="hero-side-text">Harsh Kumar · Jamshedpur · realharshkumar</div>
@@ -847,9 +863,6 @@
 </footer>
 
 <script>
-  const heroImg = document.getElementById('heroImg');
-  if (heroImg) heroImg.style.backgroundImage = "url('/assets/hero-photo.jpg')";
-
   function escapeHTML(value) {
     return String(value || '').replace(/[&<>"']/g, char => ({
       '&': '&amp;',
@@ -861,7 +874,7 @@
   }
 
   function articleHref(slug) {
-    return `/article.html?slug=${encodeURIComponent(slug || '')}`;
+    return slug ? `/writings/${encodeURIComponent(slug)}` : '/writings.html';
   }
 
   function contentText(content) {
