@@ -669,7 +669,7 @@
       <p class="medium-voice">
         I break down why brands work, not just what they do.<br>From marketing psychology to real-world execution,<br>this is where ideas are tested, not repeated.<br>Published here first. Then distributed everywhere else.
       </p>
-      <a href="/writings.html" class="medium-cta">See all writings →</a>
+      <a href="/writings" class="medium-cta">See all writings →</a>
     </div>
     <div class="medium-right r d1">
       <div class="medium-articles" id="latestWritings">
@@ -874,7 +874,7 @@
   }
 
   function articleHref(slug) {
-    return slug ? `/writings/${encodeURIComponent(slug)}` : '/writings.html';
+    return slug ? `/writings/${encodeURIComponent(slug)}` : '/writings';
   }
 
   function contentText(content) {
@@ -938,7 +938,7 @@
     } catch (e) {
       console.log('Writing feed unavailable');
       document.getElementById('latestWritings').innerHTML = `
-        <a href="/writings.html" class="m-art m-art-status">
+        <a href="/writings" class="m-art m-art-status">
           <p class="m-tag">Archive</p>
           <p class="m-title">Open the writings page</p>
           <p class="m-bio">The latest essays are taking longer than usual to load.</p>

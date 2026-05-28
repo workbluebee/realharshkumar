@@ -331,7 +331,7 @@
   <!-- NAVIGATION -->
   <nav>
     <a href="/" class="nav-sig"><strong>Harsh</strong> Kumar</a>
-    <a href="/writings.html" class="nav-back">← All writings</a>
+    <a href="/writings" class="nav-back">← All writings</a>
   </nav>
 
   <!-- ARTICLE CONTAINER -->
@@ -607,7 +607,7 @@
             <div class="error">
               <h2>Article not found</h2>
               <p>Sorry, we couldn't find this article.</p>
-              <a href="/writings.html" class="nav-btn">Back to all writings</a>
+              <a href="/writings" class="nav-btn">Back to all writings</a>
             </div>
           `;
           return;
@@ -713,7 +713,7 @@
                 <div class="filed-under">
                   <span>Filed under</span>
                   <div>
-                    ${filedUnder.map(tag => `<a href="/writings.html" class="filed-tag">${escapeHTML(tag)}</a>`).join('')}
+                    ${filedUnder.map(tag => `<a href="/writings" class="filed-tag">${escapeHTML(tag)}</a>`).join('')}
                   </div>
                 </div>
               ` : ''}
@@ -725,7 +725,7 @@
               </div>
               <p class="article-trust">Published first on realharshkumar.com. Source: ${escapeHTML(article.title)} by ${AUTHOR_HANDLE}.</p>
               <div class="article-nav">
-                <a href="/writings.html" class="nav-btn">All writings →</a>
+                <a href="/writings" class="nav-btn">All writings →</a>
                 <a href="/" class="nav-btn">Home →</a>
               </div>
             </div>
@@ -739,7 +739,7 @@
           <div class="error">
             <h2>${timedOut ? 'Still fetching the essay' : 'Article not available'}</h2>
             <p>${timedOut ? 'The archive is taking longer than usual. Refresh once, or head back to the writings page.' : "We couldn't load this article. It might have been moved or deleted."}</p>
-            <a href="/writings.html">Back to writings</a>
+            <a href="/writings">Back to writings</a>
           </div>
         `;
       }

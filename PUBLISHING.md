@@ -23,9 +23,10 @@ Use this checklist before publishing a new article from Sanity.
 
 ## After Publishing
 
-- Open `/writings.html` and confirm the article card appears.
+- Open `/writings` and confirm the article card appears.
 - Open the article and confirm the date, read time, pull quote, and footer source line.
 - Share the article URL once in a private chat to confirm the preview is acceptable.
+- Open `/sitemap.xml` after deploy and confirm the article URL appears. The sitemap is generated from Sanity, so this should not require a code change.
 - Run a quick mobile check for horizontal scrolling.
 
 ## Sanity Studio Access
