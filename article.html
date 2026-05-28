@@ -412,14 +412,7 @@
     }
 
     function findPullQuote(article) {
-      if (article?.pullQuote) return article.pullQuote;
-      if (article?.quote) return article.quote;
-      const text = stripMarkers(contentText(article?.content));
-      const quoted = text.match(/"([^"]{70,220})"/);
-      if (quoted) return quoted[1];
-      const sentences = text.match(/[^.!?]+[.!?]+/g) || [];
-      const sentence = sentences.find(part => part.length > 90 && part.length < 230);
-      return sentence || '';
+      return String(article?.pullQuote || article?.quote || '').trim();
     }
 
     function canonicalArticleUrl() {
