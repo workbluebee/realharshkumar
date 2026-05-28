@@ -990,7 +990,10 @@ header{
     justify-self:end;
   }
   .writings-grid{grid-template-columns:1fr !important;}
-  .writing-card{grid-column:auto;}
+  .writing-card,
+  .writing-card:last-child:nth-child(odd){
+    grid-column:1 / -1 !important;
+  }
   .ex-grid,
   .c-grid{grid-template-columns:1fr !important;}
 }
