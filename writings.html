@@ -273,7 +273,7 @@
       .load-more{padding:1.5rem 1rem;}
     }
   </style>
-  <link rel="stylesheet" href="/editorial.css?v=38">
+  <link rel="stylesheet" href="/editorial.css?v=39">
 </head>
 <body>
 
@@ -305,6 +305,10 @@
 <!-- WRITINGS -->
 <div class="writings-container">
   <aside class="reading-index" aria-label="Reading index">
+    <button class="index-toggle" id="readingIndexToggle" type="button" aria-expanded="false" aria-controls="readingIndex">
+      <span class="index-toggle-label">Reading Index</span>
+      <strong id="activeFilterLabel">All Writings</strong>
+    </button>
     <p class="index-kicker">Reading Index</p>
     <div class="index-list" id="readingIndex">
       <button class="index-item active" type="button" data-filter="all">
@@ -342,6 +346,9 @@
   // Hamburger Menu
   const hamburger = document.getElementById('hamburger');
   const navMenu = document.getElementById('navMenu');
+  const readingIndexEl = document.querySelector('.reading-index');
+  const readingIndexToggle = document.getElementById('readingIndexToggle');
+  const activeFilterLabel = document.getElementById('activeFilterLabel');
   
   hamburger.addEventListener('click', () => {
     hamburger.classList.toggle('active');
@@ -363,6 +370,7 @@
   let currentFilter = 'all';
   let displayedCount = 0;
   const itemsPerPage = 6;
+  const categoryOrder = ['marketing', 'brand-analysis', 'psychology', 'strategy'];
 
   function escapeHTML(value) {
     return String(value || '').replace(/[&<>"']/g, char => ({
@@ -408,6 +416,12 @@
     return `/article.html?slug=${encodeURIComponent(slug || '')}`;
   }
 
+  function categoryRank(key) {
+    if (key === 'other') return 999;
+    const rank = categoryOrder.indexOf(key);
+    return rank === -1 ? 500 : rank;
+  }
+
   function fetchWithTimeout(url, options = {}, timeoutMs = 7000) {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -419,6 +433,10 @@
     document.querySelectorAll('.index-item').forEach(button => {
       button.classList.toggle('active', button.dataset.filter === filter);
     });
+    const activeButton = document.querySelector(`.index-item[data-filter="${filter}"] span`);
+    if (activeFilterLabel && activeButton) {
+      activeFilterLabel.textContent = activeButton.textContent;
+    }
   }
 
   function setFilter(filter) {
@@ -426,6 +444,10 @@
     displayedCount = 0;
     updateActiveFilters(filter);
     displayWritings();
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      readingIndexEl?.classList.remove('open');
+      readingIndexToggle?.setAttribute('aria-expanded', 'false');
+    }
   }
 
   function renderReadingIndex() {
@@ -443,7 +465,13 @@
     const items = [
       { key: 'all', name: 'All Writings', count: allWritings.length },
       ...Object.entries(counts)
-        .sort((a, b) => b[1].count - a[1].count)
+        .sort((a, b) => {
+          if (a[0] === 'other') return 1;
+          if (b[0] === 'other') return -1;
+          const countDiff = b[1].count - a[1].count;
+          if (countDiff) return countDiff;
+          return categoryRank(a[0]) - categoryRank(b[0]) || a[1].name.localeCompare(b[1].name);
+        })
         .map(([key, value]) => ({ key, ...value }))
     ];
 
@@ -457,7 +485,20 @@
     container.querySelectorAll('.index-item').forEach(button => {
       button.addEventListener('click', () => setFilter(button.dataset.filter));
     });
+    updateActiveFilters(currentFilter);
   }
+
+  readingIndexToggle?.addEventListener('click', () => {
+    const isOpen = readingIndexEl?.classList.toggle('open');
+    readingIndexToggle.setAttribute('aria-expanded', String(Boolean(isOpen)));
+  });
+
+  window.addEventListener('resize', () => {
+    if (!window.matchMedia('(max-width: 768px)').matches) {
+      readingIndexEl?.classList.remove('open');
+      readingIndexToggle?.setAttribute('aria-expanded', 'false');
+    }
+  });
 
   async function loadWritings() {
     try {
