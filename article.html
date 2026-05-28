@@ -306,7 +306,7 @@
       .article-title{font-size:clamp(1.8rem,5vw,2.5rem);}
     }
   </style>
-  <link rel="stylesheet" href="/editorial.css?v=33">
+  <link rel="stylesheet" href="/editorial.css?v=34">
 </head>
 
 <body>
@@ -703,6 +703,12 @@
         toolbar.setAttribute('aria-hidden', 'true');
       }
 
+      let selectionTimer = 0;
+      function queueToolbar(delay = 90) {
+        window.clearTimeout(selectionTimer);
+        selectionTimer = window.setTimeout(showToolbar, delay);
+      }
+
       function selectedTextFromArticle() {
         const selection = window.getSelection();
         if (!selection || selection.isCollapsed || selection.rangeCount === 0) return '';
@@ -890,19 +896,33 @@
       document.getElementById('quoteShareBtn').addEventListener('click', shareToX);
       document.getElementById('quoteDownloadBtn').addEventListener('click', downloadQuoteCard);
 
+      document.addEventListener('selectionchange', () => {
+        if (modal.classList.contains('visible')) return;
+        queueToolbar(160);
+      });
+      document.addEventListener('pointerup', event => {
+        if (event.target instanceof Element && event.target.closest('.selection-toolbar, .quote-share-modal')) return;
+        queueToolbar(80);
+      });
+      document.addEventListener('touchend', event => {
+        if (event.target instanceof Element && event.target.closest('.selection-toolbar, .quote-share-modal')) return;
+        queueToolbar(220);
+      }, { passive: true });
       document.addEventListener('mouseup', event => {
         if (event.target instanceof Element && event.target.closest('.selection-toolbar, .quote-share-modal')) return;
-        window.setTimeout(showToolbar, 40);
+        queueToolbar(40);
       });
       document.addEventListener('keyup', event => {
         if (event.key === 'Escape') {
           hideToolbar();
           closeSharePreview();
         } else {
-          window.setTimeout(showToolbar, 40);
+          queueToolbar(40);
         }
       });
-      window.addEventListener('scroll', hideToolbar, { passive: true });
+      window.addEventListener('scroll', () => {
+        if (window.innerWidth > 700) hideToolbar();
+      }, { passive: true });
     }
 
     // Load article on page load
