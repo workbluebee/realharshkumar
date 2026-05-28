@@ -23,13 +23,19 @@ module.exports = async function handler(req, res) {
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
   try {
-    const sanityResponse = await fetch(url, { headers });
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 6000);
+    const sanityResponse = await fetch(url, { headers, signal: controller.signal })
+      .finally(() => clearTimeout(timer));
     const body = await sanityResponse.text();
 
     res.setHeader('Content-Type', sanityResponse.headers.get('content-type') || 'application/json');
     res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=86400');
     return res.status(sanityResponse.status).send(body);
   } catch (error) {
+    if (error?.name === 'AbortError') {
+      return res.status(504).json({ error: 'Sanity request timed out' });
+    }
     return res.status(502).json({ error: 'Sanity request failed' });
   }
 };

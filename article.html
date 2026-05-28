@@ -306,7 +306,7 @@
       .article-title{font-size:clamp(1.8rem,5vw,2.5rem);}
     }
   </style>
-  <link rel="stylesheet" href="/editorial.css?v=37">
+  <link rel="stylesheet" href="/editorial.css?v=38">
 </head>
 
 <body>
@@ -322,7 +322,17 @@
   <!-- ARTICLE CONTAINER -->
   <div class="article-wrapper">
     <div id="articleContent">
-      <div class="loading">Loading article...</div>
+      <div class="article-skeleton" aria-label="Loading article" aria-live="polite">
+        <div class="skeleton-line skeleton-meta"></div>
+        <div class="skeleton-line skeleton-title-wide"></div>
+        <div class="skeleton-line skeleton-title-mid"></div>
+        <div class="skeleton-line skeleton-copy"></div>
+        <div class="skeleton-line skeleton-copy-short"></div>
+        <div class="skeleton-media"></div>
+        <div class="skeleton-line skeleton-body"></div>
+        <div class="skeleton-line skeleton-body"></div>
+        <div class="skeleton-line skeleton-body-short"></div>
+      </div>
     </div>
   </div>
 
@@ -453,6 +463,13 @@
     const pathSlug = pathParts[pathParts.length - 1]?.replace(/\.html$/, '');
     const slug = new URLSearchParams(window.location.search).get('slug') || pathSlug;
 
+    function fetchWithTimeout(url, options = {}, timeoutMs = 7000) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      return fetch(url, { ...options, signal: controller.signal })
+        .finally(() => clearTimeout(timer));
+    }
+
     // Fetch article from Sanity by slug
     async function loadArticle() {
       try {
@@ -460,8 +477,10 @@
         const DATASET = 'production';
         const query = `*[_type == "writing" && slug.current == ${JSON.stringify(slug)}][0]`;
         
-        const response = await fetch(
-          `/api/sanity?query=${encodeURIComponent(query)}`
+        const response = await fetchWithTimeout(
+          `/api/sanity?query=${encodeURIComponent(query)}`,
+          {},
+          7000
         );
         
         if (!response.ok) throw new Error('API error');
@@ -608,11 +627,12 @@
 
       } catch (error) {
         console.error('Error loading article:', error);
+        const timedOut = error?.name === 'AbortError';
         document.getElementById('articleContent').innerHTML = `
           <div class="error">
-            <h2>Article not available</h2>
-            <p>We couldn't load this article. It might have been moved or deleted.</p>
-            <a href="/writings.html">← Back to writings</a>
+            <h2>${timedOut ? 'Still fetching the essay' : 'Article not available'}</h2>
+            <p>${timedOut ? 'The archive is taking longer than usual. Refresh once, or head back to the writings page.' : "We couldn't load this article. It might have been moved or deleted."}</p>
+            <a href="/writings.html">Back to writings</a>
           </div>
         `;
       }

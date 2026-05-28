@@ -573,7 +573,7 @@
       footer{flex-direction:column;gap:0.4rem;text-align:center;padding:1.4rem;}
     }
   </style>
-  <link rel="stylesheet" href="/editorial.css?v=37">
+  <link rel="stylesheet" href="/editorial.css?v=38">
 </head>
 <body>
 
@@ -657,8 +657,17 @@
     </div>
     <div class="medium-right r d1">
       <div class="medium-articles" id="latestWritings">
-        <!-- Latest writings load here from Sanity -->
-        <p style="color:rgba(250,247,242,0.5);padding:2rem;text-align:center;">Loading latest writings...</p>
+        <div class="latest-skeleton" aria-label="Loading latest writings" aria-live="polite">
+          <div class="feed-skeleton-card">
+            <span></span><strong></strong><p></p>
+          </div>
+          <div class="feed-skeleton-card">
+            <span></span><strong></strong><p></p>
+          </div>
+          <div class="feed-skeleton-card">
+            <span></span><strong></strong><p></p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -877,13 +886,22 @@
     return Math.max(1, Math.ceil(words / 220));
   }
 
+  function fetchWithTimeout(url, options = {}, timeoutMs = 7000) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    return fetch(url, { ...options, signal: controller.signal })
+      .finally(() => clearTimeout(timer));
+  }
+
   // Sanity CMS Integration - Fetch latest writing
   async function loadLatestWritings() {
     try {
       const queryString = '*[_type == "writing"] | order(_createdAt desc)';
       
-      const response = await fetch(
-        `/api/sanity?query=${encodeURIComponent(queryString)}`
+      const response = await fetchWithTimeout(
+        `/api/sanity?query=${encodeURIComponent(queryString)}`,
+        {},
+        7000
       );
       
       if (!response.ok) throw new Error('Sanity API unavailable');
@@ -905,13 +923,12 @@
         container.innerHTML = '<p style="color:rgba(250,247,242,0.5);padding:2rem;">Check back soon for new writings...</p>';
       }
     } catch (e) {
-      console.log('Sanity fetch pending - setup required');
-      // Fallback to placeholder
+      console.log('Writing feed unavailable');
       document.getElementById('latestWritings').innerHTML = `
-        <a href="/writings.html" class="m-art">
-          <p class="m-tag">Coming Soon</p>
-          <p class="m-title">Your First Original Writing</p>
-          <p class="m-bio">Publish your first article in Sanity CMS and it will appear here automatically.</p>
+        <a href="/writings.html" class="m-art m-art-status">
+          <p class="m-tag">Archive</p>
+          <p class="m-title">Open the writings page</p>
+          <p class="m-bio">The latest essays are taking longer than usual to load.</p>
           <span class="m-arrow">↗</span>
         </a>
       `;

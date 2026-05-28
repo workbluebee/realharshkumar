@@ -273,7 +273,7 @@
       .load-more{padding:1.5rem 1rem;}
     }
   </style>
-  <link rel="stylesheet" href="/editorial.css?v=37">
+  <link rel="stylesheet" href="/editorial.css?v=38">
 </head>
 <body>
 
@@ -315,7 +315,12 @@
   </aside>
   <div class="archive-main">
     <div class="writings-grid" id="writingsGrid">
-      <p class="empty">Loading writings...</p>
+      <div class="archive-skeleton" aria-label="Loading writings" aria-live="polite">
+        <div class="archive-skeleton-card"><span></span><strong></strong><p></p><small></small></div>
+        <div class="archive-skeleton-card"><span></span><strong></strong><p></p><small></small></div>
+        <div class="archive-skeleton-card"><span></span><strong></strong><p></p><small></small></div>
+        <div class="archive-skeleton-card"><span></span><strong></strong><p></p><small></small></div>
+      </div>
     </div>
     <div class="load-more" id="loadMore" style="display:none;">
       <button class="load-btn" type="button">Load more articles</button>
@@ -403,6 +408,13 @@
     return `/article.html?slug=${encodeURIComponent(slug || '')}`;
   }
 
+  function fetchWithTimeout(url, options = {}, timeoutMs = 7000) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    return fetch(url, { ...options, signal: controller.signal })
+      .finally(() => clearTimeout(timer));
+  }
+
   function updateActiveFilters(filter) {
     document.querySelectorAll('.index-item').forEach(button => {
       button.classList.toggle('active', button.dataset.filter === filter);
@@ -450,8 +462,10 @@
   async function loadWritings() {
     try {
       const queryString = '*[_type == "writing"] | order(_createdAt desc)';
-      const response = await fetch(
-        `/api/sanity?query=${encodeURIComponent(queryString)}`
+      const response = await fetchWithTimeout(
+        `/api/sanity?query=${encodeURIComponent(queryString)}`,
+        {},
+        7000
       );
       
       if (!response.ok) throw new Error('Sanity API unavailable');
