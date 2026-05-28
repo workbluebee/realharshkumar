@@ -73,8 +73,14 @@ async function fetchArticles() {
 }
 
 module.exports = async function handler(req, res) {
+  if (req.method === 'HEAD') {
+    res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+    res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=86400');
+    return res.status(200).end();
+  }
+
   if (req.method !== 'GET') {
-    res.setHeader('Allow', 'GET');
+    res.setHeader('Allow', 'GET, HEAD');
     return res.status(405).send('Method not allowed');
   }
 
