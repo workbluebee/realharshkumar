@@ -37,10 +37,8 @@
   <link rel="shortcut icon" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link rel="preload" as="image" href="/assets/hero-photo-mobile.webp" type="image/webp" media="(max-width: 768px)" fetchpriority="high">
   <link rel="preload" as="image" href="/assets/hero-photo.webp" type="image/webp" media="(min-width: 769px)" fetchpriority="high">
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,600;1,9..144,700&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'"/>
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,600;1,9..144,700&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"></noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,600;1,9..144,700&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
     :root{
@@ -519,6 +517,16 @@
     /* ── ANIMATIONS ── */
     @keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
     @keyframes fadein{from{opacity:0}to{opacity:1}}
+    .hero-kicker,
+    .hero-h1,
+    .hero-intro,
+    .hero-sub,
+    .hero-actions,
+    .hero-img,
+    .hero-side-text{
+      opacity:1;
+      animation:none;
+    }
     .r{opacity:0;transform:translateY(26px);transition:opacity 0.75s ease,transform 0.75s ease;}
     .r.on{opacity:1;transform:none;}
     .d1{transition-delay:0.1s}.d2{transition-delay:0.2s}.d3{transition-delay:0.32s}
@@ -603,8 +611,7 @@
       footer{flex-direction:column;gap:0.4rem;text-align:center;padding:1.4rem;}
     }
   </style>
-  <link rel="preload" as="style" href="/editorial.css?v=42" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="/editorial.css?v=42"></noscript>
+  <link rel="stylesheet" href="/editorial.css?v=42">
 </head>
 <body>
 
@@ -993,16 +1000,19 @@
     }
 
     const writingsSection = document.getElementById('writings');
-    if ('IntersectionObserver' in window && writingsSection) {
-      const writingsObserver = new IntersectionObserver((entries, observer) => {
-        if (!entries.some(entry => entry.isIntersecting)) return;
-        observer.disconnect();
-        startLatestWritings();
-      }, { rootMargin: '160px 0px' });
-      writingsObserver.observe(writingsSection);
-    }
+    document.querySelectorAll('a[href="#writings"]').forEach(link => {
+      link.addEventListener('click', startLatestWritings, { once: true });
+    });
 
-    window.setTimeout(startLatestWritings, 6000);
+    if (writingsSection) {
+      const startWhenClose = () => {
+        if (writingsSection.getBoundingClientRect().top - window.innerHeight > 480) return;
+        window.removeEventListener('scroll', startWhenClose);
+        startLatestWritings();
+      };
+
+      window.addEventListener('scroll', startWhenClose, { passive: true });
+    }
   }
 
   requestAnimationFrame(() => requestAnimationFrame(alignWritingsHash));
