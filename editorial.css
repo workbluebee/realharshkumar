@@ -1206,7 +1206,7 @@ header{
   }
   .hero{
     grid-template-columns:1fr !important;
-    padding-top:3.8rem;
+    padding-top:2.6rem;
   }
   .hero-left::before{display:none;}
   .hero-right{
@@ -1309,11 +1309,38 @@ header{
   nav.dark-bg .nav-menu.active a:hover{
     color:var(--ink) !important;
   }
-  .hero-left{padding:4.6rem 1.4rem 2.2rem !important;}
-  .hero-h1{font-size:clamp(3.35rem,16vw,5.2rem) !important;}
-  .hero-intro{font-size:1.08rem !important;}
-  .hero-sub{font-size:0.88rem !important;}
-  .hero-actions{align-items:flex-start;flex-direction:column;}
+  .hero-left{padding:3rem 1.25rem 1.9rem !important;}
+  .hero-kicker{
+    margin-bottom:1.35rem !important;
+    font-size:0.6rem !important;
+    line-height:1.45 !important;
+    letter-spacing:0.17em !important;
+  }
+  .hero-h1{
+    font-size:3.75rem !important;
+    line-height:0.88 !important;
+    letter-spacing:0 !important;
+  }
+  .hero-h1 .ital{
+    display:inline-block;
+    font-size:0.84em;
+    white-space:nowrap;
+  }
+  .hero-intro{
+    margin-top:1.75rem !important;
+    font-size:1.02rem !important;
+    line-height:1.55 !important;
+  }
+  .hero-sub{
+    margin-top:0.8rem !important;
+    font-size:0.86rem !important;
+    line-height:1.72 !important;
+  }
+  .hero-actions{
+    margin-top:1.35rem !important;
+    align-items:flex-start;
+    flex-direction:column;
+  }
   .btn-dark,
   .btn-line{
     width:100%;
@@ -1607,4 +1634,12 @@ header{
     font-size:0.72rem;
     letter-spacing:0.15em;
   }
+}
+
+@media(max-width:380px){
+  .hero{padding-top:2.4rem !important;}
+  .hero-left{padding:2.75rem 1.05rem 1.75rem !important;}
+  .hero-h1{font-size:3.2rem !important;}
+  .hero-h1 .ital{font-size:0.82em;}
+  .hero-intro{font-size:0.98rem !important;}
 }
