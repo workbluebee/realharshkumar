@@ -37,7 +37,8 @@
   <link rel="shortcut icon" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link rel="preload" as="image" href="/assets/hero-photo.jpg" fetchpriority="high">
+  <link rel="preload" as="image" href="/assets/hero-photo-mobile.webp" type="image/webp" media="(max-width: 768px)" fetchpriority="high">
+  <link rel="preload" as="image" href="/assets/hero-photo.webp" type="image/webp" media="(min-width: 769px)" fetchpriority="high">
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,600;1,9..144,700&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'"/>
   <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,600;1,9..144,700&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"></noscript>
   <style>
@@ -222,6 +223,11 @@
     .hero-right{position:relative;overflow:hidden;background:var(--pale);}
     .hero-img{
       position:absolute;inset:0;
+      background-image:url('/assets/hero-photo.jpg');
+      background-image:image-set(
+        url('/assets/hero-photo.webp') type('image/webp'),
+        url('/assets/hero-photo.jpg') type('image/jpeg')
+      );
       background-size:cover;background-position:center 15%;
       filter:grayscale(15%) contrast(1.08);
       opacity:0;animation:fadein 1.3s 0.35s forwards;
@@ -561,6 +567,13 @@
       .hero{grid-template-columns:1fr;min-height:auto;}
       .hero-left{padding:5rem 1.4rem 2.5rem;border-right:none;width:100%;margin-top:0;}
       .hero-right{height:65vw;width:100%;}
+      .hero-img{
+        background-image:url('/assets/hero-photo-mobile.jpg');
+        background-image:image-set(
+          url('/assets/hero-photo-mobile.webp') type('image/webp'),
+          url('/assets/hero-photo-mobile.jpg') type('image/jpeg')
+        );
+      }
       .hero-h1{font-size:clamp(2.8rem,11vw,4rem);}
       .marquee-piece{font-size:0.78rem;padding:0 1.5rem;}
       .medium-top{grid-template-columns:1fr;}
@@ -590,7 +603,8 @@
       footer{flex-direction:column;gap:0.4rem;text-align:center;padding:1.4rem;}
     }
   </style>
-  <link rel="stylesheet" href="/editorial.css?v=41">
+  <link rel="preload" as="style" href="/editorial.css?v=42" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/editorial.css?v=42"></noscript>
 </head>
 <body>
 
@@ -631,7 +645,7 @@
     </div>
   </div>
   <div class="hero-right">
-    <div class="hero-img" id="heroImg" style="background-image:url('/assets/hero-photo.jpg')"></div>
+    <div class="hero-img" id="heroImg"></div>
     <div class="hero-img-grad"></div>
     <div class="hero-year">2020</div>
     <div class="hero-side-text">Harsh Kumar · Jamshedpur · realharshkumar</div>
