@@ -35,10 +35,10 @@
   <title>Harsh Kumar | realharshkumar</title>
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="shortcut icon" href="/favicon.ico">
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link rel="preload" href="/assets/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/fraunces-latin-italic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/instrument-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" as="image" href="/assets/hero-photo.webp" type="image/webp" media="(min-width: 769px)" fetchpriority="high">
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,600;1,9..144,700&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
     :root{
@@ -611,7 +611,7 @@
       footer{flex-direction:column;gap:0.4rem;text-align:center;padding:1.4rem;}
     }
   </style>
-  <link rel="stylesheet" href="/editorial.css?v=42">
+  <link rel="stylesheet" href="/editorial.css?v=43">
 </head>
 <body>
 
@@ -695,17 +695,24 @@
     </div>
     <div class="medium-right r d1">
       <div class="medium-articles" id="latestWritings">
-        <div class="latest-skeleton" aria-label="Loading latest writings" aria-live="polite">
-          <div class="feed-skeleton-card">
-            <span></span><strong></strong><p></p>
-          </div>
-          <div class="feed-skeleton-card">
-            <span></span><strong></strong><p></p>
-          </div>
-          <div class="feed-skeleton-card">
-            <span></span><strong></strong><p></p>
-          </div>
-        </div>
+        <a href="/writings/how-tata-salt-made-nacl-patriotic-the-marketing-genius-of-desh-ka-namak" class="m-art">
+          <p class="m-tag">Brand Analysis · 3 min read</p>
+          <p class="m-title">How Tata Salt Made NaCl Patriotic: The Marketing Genius of 'Desh Ka Namak'</p>
+          <p class="m-bio">How did a salt brand become a national symbol? Tata Salt didn't sell seasoning. They sold India.</p>
+          <span class="m-arrow">↗</span>
+        </a>
+        <a href="/writings/how-gen-z-killed-traditional-advertising-without-even-trying-and-why-boomers-are-big-mad" class="m-art">
+          <p class="m-tag">Marketing · 4 min read</p>
+          <p class="m-title">How Gen Z Killed Traditional Advertising Without Even Trying</p>
+          <p class="m-bio">Boomers had jingles. Millennials had hashtags. Gen Z has chaos and it's working.</p>
+          <span class="m-arrow">↗</span>
+        </a>
+        <a href="/writings/why-luxury-brands-burn-unsold-products-and-you-still-want-to-buy-them-the-scarcity-scam" class="m-art">
+          <p class="m-tag">Psychology · 4 min read</p>
+          <p class="m-title">Why Luxury Brands Burn Unsold Products and You Still Want to Buy Them</p>
+          <p class="m-bio">Scarcity is not an accident. It is manufactured desire in a very expensive coat.</p>
+          <span class="m-arrow">↗</span>
+        </a>
       </div>
     </div>
   </div>
@@ -999,20 +1006,9 @@
       return;
     }
 
-    const writingsSection = document.getElementById('writings');
     document.querySelectorAll('a[href="#writings"]').forEach(link => {
       link.addEventListener('click', startLatestWritings, { once: true });
     });
-
-    if (writingsSection) {
-      const startWhenClose = () => {
-        if (writingsSection.getBoundingClientRect().top - window.innerHeight > 480) return;
-        window.removeEventListener('scroll', startWhenClose);
-        startLatestWritings();
-      };
-
-      window.addEventListener('scroll', startWhenClose, { passive: true });
-    }
   }
 
   requestAnimationFrame(() => requestAnimationFrame(alignWritingsHash));
